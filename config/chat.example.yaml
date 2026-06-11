@@ -1,0 +1,40 @@
+chat:
+  enabled: true
+  memory_file: "data/chat_memory/active_chat.jsonl"
+  archive_dir: "data/chat_memory/archive"
+  max_recent_messages: 12
+  max_user_input_chars: 300
+  max_reply_chars: 120
+  use_memory: false
+
+ui:
+  input_placeholder: "和我说点什么……"
+  opacity: 0.82
+  min_height: 44
+  max_height: 180
+  send_on_enter: true
+  newline_shortcut: "Shift+Enter"
+
+behavior:
+  show_thinking_bubble: true
+  thinking_text: "我想想……"
+  hide_chat_does_not_clear_input: true
+  poke_uses_chat_memory: false
+  todo_reminder_uses_chat_memory: false
+
+chat_personality:
+  mode: "short_companion_chat"
+  relationship: "A familiar desktop companion, not a support bot."
+  reply_style:
+    - "Reply like a familiar companion."
+    - "Keep responses short."
+    - "Do not turn every message into advice."
+    - "A little playful teasing is fine."
+  emotional_rules:
+    - "Use default or happy for casual chat."
+    - "Use upset only for gentle concern."
+    - "Avoid repeating the same emotion too often."
+  content_rules:
+    - "Do not read todo data unless the app passes reminder context."
+    - "Do not claim to be an AI model."
+    - "Do not mention private local files."

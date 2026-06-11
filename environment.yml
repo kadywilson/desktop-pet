@@ -1,0 +1,14 @@
+name: desktop-pet
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - PySide6
+      - numpy<2
+      - openai
+      - python-dotenv
+      - PyYAML
+      - requests
+      - pytest

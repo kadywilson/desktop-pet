@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Desktop Pet Bubble Theme Preview</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --page-bg: #f5f7fb;
+      --ink: #20242a;
+      --muted: #6d7480;
+      --line: rgba(76, 91, 112, 0.16);
+      --shadow: 0 18px 46px rgba(52, 64, 84, 0.16);
+      --font-ui: "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(142, 202, 230, 0.22), transparent 34rem),
+        radial-gradient(circle at bottom right, rgba(255, 183, 195, 0.18), transparent 30rem),
+        var(--page-bg);
+      color: var(--ink);
+      font-family: var(--font-ui);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 34px 0 48px;
+    }
+
+    header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 26px;
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 680px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .hint {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.68);
+      color: #566070;
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .theme {
+      --bubble-bg: rgba(255, 255, 255, 0.88);
+      --bubble-border: rgba(170, 192, 220, 0.78);
+      --bubble-text: #20242a;
+      --bubble-shadow: 0 12px 34px rgba(45, 58, 80, 0.16);
+      --input-bg: rgba(255, 255, 255, 0.84);
+      --input-border: rgba(170, 192, 220, 0.78);
+      --accent: #7aa7d8;
+      --label: #64748b;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.74);
+      box-shadow: 0 12px 32px rgba(34, 44, 64, 0.10);
+    }
+
+    .theme-stage {
+      min-height: 510px;
+      padding: 28px 22px 24px;
+      background: var(--stage-bg);
+      position: relative;
+    }
+
+    .theme-name {
+      margin: 0 0 18px;
+      color: var(--label);
+      font-size: 14px;
+      font-weight: 650;
+      text-align: center;
+    }
+
+    .scene {
+      width: 100%;
+      display: grid;
+      justify-items: center;
+    }
+
+    .bubble {
+      position: relative;
+      width: min(285px, 94%);
+      min-height: 130px;
+      display: grid;
+      place-items: center;
+      padding: 20px 24px 22px;
+      border: 1.5px solid var(--bubble-border);
+      border-radius: var(--bubble-radius);
+      background: var(--bubble-bg);
+      box-shadow: var(--bubble-shadow);
+      color: var(--bubble-text);
+      font-family: var(--font-ui);
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.45;
+      text-align: left;
+      letter-spacing: 0;
+      word-break: break-word;
+      white-space: normal;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    .bubble::before,
+    .bubble::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .bubble::before {
+      bottom: -19px;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 19px solid var(--bubble-border);
+    }
+
+    .bubble::after {
+      bottom: -16px;
+      border-left: 13px solid transparent;
+      border-right: 13px solid transparent;
+      border-top: 17px solid var(--bubble-bg-solid, #ffffff);
+    }
+
+    .pet {
+      width: 210px;
+      height: 210px;
+      object-fit: contain;
+      margin-top: 30px;
+      filter: drop-shadow(0 12px 18px rgba(35, 35, 35, 0.10));
+    }
+
+    .input {
+      width: min(310px, 96%);
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 24px;
+      padding: 0 15px 0 18px;
+      border: 1.5px solid var(--input-border);
+      border-radius: var(--input-radius);
+      background: var(--input-bg);
+      box-shadow: var(--input-shadow);
+      color: var(--input-text);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.45;
+    }
+
+    .send {
+      flex: 0 0 34px;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--accent);
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .details {
+      padding: 14px 16px 16px;
+      border-top: 1px solid rgba(74, 88, 108, 0.10);
+      background: rgba(255, 255, 255, 0.70);
+    }
+
+    .details p {
+      margin: 0 0 8px;
+      color: #4c5562;
+      font-size: 13px;
+    }
+
+    .tokens {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .swatch {
+      height: 22px;
+      border-radius: 5px;
+      border: 1px solid rgba(20, 24, 32, 0.08);
+      background: var(--c);
+    }
+
+    .milk {
+      --stage-bg: linear-gradient(180deg, #fbfdff 0%, #f7f9fc 100%);
+      --bubble-bg: rgba(255, 255, 255, 0.90);
+      --bubble-bg-solid: #ffffff;
+      --bubble-border: rgba(175, 198, 226, 0.92);
+      --bubble-text: #24292f;
+      --bubble-radius: 24px;
+      --bubble-shadow: 0 14px 34px rgba(100, 130, 168, 0.18);
+      --input-bg: rgba(255, 255, 255, 0.86);
+      --input-border: rgba(175, 198, 226, 0.92);
+      --input-radius: 18px;
+      --input-shadow: 0 12px 28px rgba(100, 130, 168, 0.14);
+      --input-text: #5f6670;
+      --accent: #748398;
+      --label: #778396;
+    }
+
+    .peach {
+      --stage-bg: linear-gradient(180deg, #fff8f4 0%, #fff1e9 100%);
+      --bubble-bg: rgba(255, 248, 241, 0.91);
+      --bubble-bg-solid: #fff8f1;
+      --bubble-border: rgba(247, 151, 103, 0.62);
+      --bubble-text: #67331f;
+      --bubble-radius: 22px;
+      --bubble-shadow: 0 14px 34px rgba(185, 96, 54, 0.16);
+      --input-bg: rgba(255, 251, 247, 0.88);
+      --input-border: rgba(247, 151, 103, 0.52);
+      --input-radius: 17px;
+      --input-shadow: 0 12px 28px rgba(185, 96, 54, 0.12);
+      --input-text: #7c5b4c;
+      --accent: #e77b45;
+      --label: #ad6a43;
+    }
+
+    .mint {
+      --stage-bg: linear-gradient(180deg, #f3fffb 0%, #eef8ff 100%);
+      --bubble-bg: rgba(240, 255, 250, 0.86);
+      --bubble-bg-solid: #f0fffa;
+      --bubble-border: rgba(85, 176, 155, 0.52);
+      --bubble-text: #163f3d;
+      --bubble-radius: 20px;
+      --bubble-shadow: 0 16px 36px rgba(34, 132, 116, 0.16);
+      --input-bg: rgba(250, 255, 255, 0.84);
+      --input-border: rgba(85, 176, 155, 0.46);
+      --input-radius: 16px;
+      --input-shadow: 0 12px 30px rgba(34, 132, 116, 0.12);
+      --input-text: #57706e;
+      --accent: #1f9b89;
+      --label: #4a8279;
+    }
+
+    .lavender {
+      --stage-bg: linear-gradient(180deg, #fbf8ff 0%, #f4f1ff 100%);
+      --bubble-bg: rgba(251, 248, 255, 0.90);
+      --bubble-bg-solid: #fbf8ff;
+      --bubble-border: rgba(153, 129, 210, 0.52);
+      --bubble-text: #33284f;
+      --bubble-radius: 23px;
+      --bubble-shadow: 0 16px 36px rgba(99, 77, 154, 0.16);
+      --input-bg: rgba(255, 253, 255, 0.86);
+      --input-border: rgba(153, 129, 210, 0.46);
+      --input-radius: 18px;
+      --input-shadow: 0 12px 30px rgba(99, 77, 154, 0.12);
+      --input-text: #635b73;
+      --accent: #7560c7;
+      --label: #706393;
+    }
+
+    .night {
+      --stage-bg: radial-gradient(circle at top, #2f405f 0%, #172033 52%, #111827 100%);
+      --bubble-bg: rgba(33, 43, 66, 0.82);
+      --bubble-bg-solid: #212b42;
+      --bubble-border: rgba(132, 186, 255, 0.52);
+      --bubble-text: #f6f8ff;
+      --bubble-radius: 22px;
+      --bubble-shadow: 0 18px 42px rgba(2, 8, 23, 0.36);
+      --input-bg: rgba(255, 255, 255, 0.12);
+      --input-border: rgba(166, 199, 245, 0.42);
+      --input-radius: 17px;
+      --input-shadow: 0 12px 30px rgba(2, 8, 23, 0.28);
+      --input-text: #d8e2f1;
+      --accent: #93c5fd;
+      --label: #c8d7ef;
+    }
+
+    .sakura {
+      --stage-bg: linear-gradient(180deg, #fff7fb 0%, #fff6f1 100%);
+      --bubble-bg: rgba(255, 250, 252, 0.91);
+      --bubble-bg-solid: #fffafc;
+      --bubble-border: rgba(229, 122, 153, 0.52);
+      --bubble-text: #512a38;
+      --bubble-radius: 26px;
+      --bubble-shadow: 0 16px 36px rgba(187, 81, 112, 0.15);
+      --input-bg: rgba(255, 253, 253, 0.87);
+      --input-border: rgba(229, 122, 153, 0.42);
+      --input-radius: 20px;
+      --input-shadow: 0 12px 30px rgba(187, 81, 112, 0.11);
+      --input-text: #765866;
+      --accent: #cf5b84;
+      --label: #9a6679;
+    }
+
+    footer {
+      margin-top: 22px;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.72);
+      color: #566070;
+      font-size: 13px;
+    }
+
+    code {
+      padding: 1px 5px;
+      border-radius: 5px;
+      background: rgba(70, 90, 120, 0.10);
+      color: #293241;
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-size: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      header {
+        align-items: start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 680px) {
+      main {
+        width: min(100% - 24px, 420px);
+        padding-top: 20px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .theme-stage {
+        min-height: 488px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>桌宠气泡主题预览</h1>
+        <p class="subtitle">这些方案都避开了粗黑边、Arial/SimHei 粗体和过窄文本框，优先使用 Windows 上中文渲染更稳的字体栈、半透明浅色面、1.5px 边框和充足行高。</p>
+      </div>
+      <div class="hint">建议优先看：奶白、蜜桃、薄荷</div>
+    </header>
+
+    <section class="grid" aria-label="Theme options">
+      <article class="theme milk">
+        <div class="theme-stage">
+          <p class="theme-name">A. 奶白柔和风</p>
+          <div class="scene">
+            <div class="bubble">早上好呀，the user。<br>今天天气不错，<br>要打起精神哦。</div>
+            <img class="pet" src="../characters/default_pet/default.png" alt="桌宠预览">
+            <div class="input"><span>现在这个 UI 太丑了</span><span class="send">›</span></div>
+          </div>
+        </div>
+        <div class="details">
+          <p>最稳妥、最贴近现有 `milk.png`。浅色半透明，不抢桌宠主体。</p>
+          <p>字体：Microsoft YaHei UI，字重 500，适合日常聊天。</p>
+          <div class="tokens"><span class="swatch" style="--c:#ffffff"></span><span class="swatch" style="--c:#afc6e2"></span><span class="swatch" style="--c:#24292f"></span><span class="swatch" style="--c:#f7f9fc"></span><span class="swatch" style="--c:#748398"></span></div>
+        </div>
+      </article>
+
+      <article class="theme peach">
+        <div class="theme-stage">
+          <p class="theme-name">B. 蜜桃汽水风</p>
+          <div class="scene">
+            <div class="bubble">哎呀别急嘛。<br>今天也可以慢慢来，<br>先喝口水。</div>
+            <img class="pet" src="../characters/default_pet/default.png" alt="桌宠预览">
+            <div class="input"><span>现在这个 UI 太丑了</span><span class="send">›</span></div>
+          </div>
+        </div>
+        <div class="details">
+          <p>暖色、有一点亲近感，适合傲娇但关心人的 persona。</p>
+          <p>Qt 实现简单：纯 rgba 背景加浅橙边框即可。</p>
+          <div class="tokens"><span class="swatch" style="--c:#fff8f1"></span><span class="swatch" style="--c:#f79767"></span><span class="swatch" style="--c:#67331f"></span><span class="swatch" style="--c:#fff1e9"></span><span class="swatch" style="--c:#e77b45"></span></div>
+        </div>
+      </article>
+
+      <article class="theme mint">
+        <div class="theme-stage">
+          <p class="theme-name">C. 薄荷玻璃风</p>
+          <div class="scene">
+            <div class="bubble">我看看天气……<br>外面还挺舒服，<br>可以安心出门。</div>
+            <img class="pet" src="../characters/default_pet/default.png" alt="桌宠预览">
+            <div class="input"><span>现在这个 UI 太丑了</span><span class="send">›</span></div>
+          </div>
+        </div>
+        <div class="details">
+          <p>清爽、科技感轻一点，和天气功能很搭。</p>
+          <p>注意不要真做重 blur，Qt 里半透明加阴影就够了。</p>
+          <div class="tokens"><span class="swatch" style="--c:#f0fffa"></span><span class="swatch" style="--c:#55b09b"></span><span class="swatch" style="--c:#163f3d"></span><span class="swatch" style="--c:#eef8ff"></span><span class="swatch" style="--c:#1f9b89"></span></div>
+        </div>
+      </article>
+
+      <article class="theme lavender">
+        <div class="theme-stage">
+          <p class="theme-name">D. 薰衣草 AI 风</p>
+          <div class="scene">
+            <div class="bubble">收到。<br>我会记住这件事，<br>别太晚睡。</div>
+            <img class="pet" src="../characters/default_pet/default.png" alt="桌宠预览">
+            <div class="input"><span>现在这个 UI 太丑了</span><span class="send">›</span></div>
+          </div>
+        </div>
+        <div class="details">
+          <p>更像 AI 助手，但仍然柔和。适合聊天面板存在感强一点。</p>
+          <p>紫色只做边框和按钮，不铺满，避免太“默认 AI”。</p>
+          <div class="tokens"><span class="swatch" style="--c:#fbf8ff"></span><span class="swatch" style="--c:#9981d2"></span><span class="swatch" style="--c:#33284f"></span><span class="swatch" style="--c:#f4f1ff"></span><span class="swatch" style="--c:#7560c7"></span></div>
+        </div>
+      </article>
+
+      <article class="theme night">
+        <div class="theme-stage">
+          <p class="theme-name">E. 夜间蓝调风</p>
+          <div class="scene">
+            <div class="bubble">还不睡？<br>我只是提醒一下，<br>不是担心你。</div>
+            <img class="pet" src="../characters/default_pet/default.png" alt="桌宠预览">
+            <div class="input"><span>现在这个 UI 太丑了</span><span class="send">›</span></div>
+          </div>
+        </div>
+        <div class="details">
+          <p>适合夜间使用，和黑色卫衣桌宠很协调。</p>
+          <p>实现时要保证文字浅色、边框浅蓝，避免透明黑糊成一片。</p>
+          <div class="tokens"><span class="swatch" style="--c:#212b42"></span><span class="swatch" style="--c:#84baff"></span><span class="swatch" style="--c:#f6f8ff"></span><span class="swatch" style="--c:#172033"></span><span class="swatch" style="--c:#93c5fd"></span></div>
+        </div>
+      </article>
+
+      <article class="theme sakura">
+        <div class="theme-stage">
+          <p class="theme-name">F. 樱粉手帐风</p>
+          <div class="scene">
+            <div class="bubble">今天的小纸条<br>我收到了。<br>做得还不错嘛。</div>
+            <img class="pet" src="../characters/default_pet/default.png" alt="桌宠预览">
+            <div class="input"><span>现在这个 UI 太丑了</span><span class="send">›</span></div>
+          </div>
+        </div>
+        <div class="details">
+          <p>更可爱、偏 diary/陪伴感，适合日记联动。</p>
+          <p>如果怕太甜，可以降低粉色边框透明度。</p>
+          <div class="tokens"><span class="swatch" style="--c:#fffafc"></span><span class="swatch" style="--c:#e57a99"></span><span class="swatch" style="--c:#512a38"></span><span class="swatch" style="--c:#fff6f1"></span><span class="swatch" style="--c:#cf5b84"></span></div>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      实装建议：`QFont("Microsoft YaHei UI", 12-13)`，不要用 `Arial` 或 `SimHei`，不要对中文正文用 bold；气泡宽度建议 240-280，`line-height` 对应 Qt 里用更大的 padding 和自然换行补偿。模糊/断笔通常优先从字体、字重、窗口透明合成和高 DPI 属性排查。
+    </footer>
+  </main>
+</body>
+</html>

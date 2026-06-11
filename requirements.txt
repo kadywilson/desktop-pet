@@ -1,0 +1,7 @@
+PySide6
+numpy<2
+openai
+python-dotenv
+pytest
+PyYAML
+requests

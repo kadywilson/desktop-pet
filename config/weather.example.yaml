@@ -1,0 +1,43 @@
+weather:
+  enabled: true
+
+  location:
+    mode: "manual"
+    # Manual only. Do not leave this empty, because wttr.in may infer location by IP.
+    # Examples: "Salt+Lake+City", "SLC", "Beijing", "Tokyo", "London"
+    query: "London"
+    display_name: "London"
+
+  provider:
+    name: "wttr"
+    base_url: "https://wttr.in"
+    backup_base_url: "https://wttr.is"
+    format: "j1"
+    timeout_seconds: 8
+
+  cache:
+    enabled: true
+    ttl_minutes: 30
+    dir: "data/weather_cache"
+    cleanup_on_start: true
+    max_age_hours: 6
+    max_files: 5
+
+  display:
+    units: "metric"
+    show_feels_like: true
+    show_humidity: true
+    show_wind: true
+    show_precipitation: true
+
+  behavior:
+    speak_if_voice_enabled: true
+
+  privacy:
+    allow_system_location: false
+    allow_gps: false
+    allow_ip_location: false
+    allow_browser_location: false
+
+  fallback:
+    message: "天气暂时查不到，但这不影响我陪你。"

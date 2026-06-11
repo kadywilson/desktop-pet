@@ -1,0 +1,62 @@
+tts:
+  enabled: true
+  provider: volcengine
+  endpoint: https://openspeech.bytedance.com/api/v3/tts/unidirectional
+  resource_id: your_volcengine_resource_id_here
+  speaker: your_volcengine_voice_type_here
+  speakers:
+    - id: your_volcengine_voice_type_here
+      name: Example Voice
+      api_version: v3
+      endpoint: https://openspeech.bytedance.com/api/v3/tts/unidirectional
+      resource_id: your_volcengine_resource_id_here
+
+audio:
+  format: mp3
+  sample_rate: 24000
+  speech_rate: 0
+  loudness_rate: 0
+
+playback:
+  muted: false
+  auto_play:
+    poke: true
+    chat: true
+    reminder: true
+
+emotion:
+  use_context_texts: true
+  use_emotion_param: false
+  default_emotion_scale: 4
+  mapping:
+    default:
+      context_text: "Use a natural, friendly Chinese desktop-pet tone."
+      emotion: neutral
+      emotion_scale: 3
+    happy:
+      context_text: "Use a bright and lightly playful tone."
+      emotion: happy
+      emotion_scale: 4
+    annoyed:
+      context_text: "Use a lightly teasing tone, not actually mean."
+      emotion: annoyed
+      emotion_scale: 3
+    upset:
+      context_text: "Use a gentle and concerned tone."
+      emotion: comfort
+      emotion_scale: 3
+
+cache:
+  enabled: true
+  dir: data/tts_cache
+  max_age_days: 2
+  max_files: 300
+  cleanup_on_start: true
+
+preview:
+  output_dir: data/tts_samples
+  sample_texts:
+    default: "我在呢，有事就叫我。"
+    happy: "今天状态不错嘛，继续保持。"
+    annoyed: "不要一直戳我啦，我也是要面子的。"
+    upset: "这么晚还没休息？我有点担心你。"

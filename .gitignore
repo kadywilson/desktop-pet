@@ -1,0 +1,88 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Local editor and agent/tool state
+.claude/
+.codex/
+.vscode/
+.idea/
+
+# Local project handoff/audit notes
+PROJECT_STATE.md
+OPEN_SOURCE_AUDIT.md
+CLAUDE.md
+
+# Local runtime configuration
+config/*.yaml
+!config/*.example.yaml
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.conda/
+conda/
+
+# Build outputs
+build/
+dist/
+*.egg-info/
+
+# Runtime data
+data/*
+!data/.gitkeep
+!data/chat_memory/
+data/chat_memory/*
+!data/chat_memory/.gitkeep
+!data/diary_feedback/
+data/diary_feedback/*
+!data/diary_feedback/inbox/
+data/diary_feedback/inbox/*
+!data/diary_feedback/inbox/.gitkeep
+!data/tts_cache/
+data/tts_cache/*
+!data/tts_cache/.gitkeep
+!data/tts_samples/
+data/tts_samples/*
+!data/tts_samples/.gitkeep
+!data/weather_cache/
+data/weather_cache/*
+!data/weather_cache/.gitkeep
+
+# Logs
+logs/*
+!logs/.gitkeep
+*.log
+
+# Generated audio and media samples
+*.mp3
+*.wav
+*.m4a
+*.flac
+
+# Vendor documents that may not be redistributable
+docs/vendors/volcengine/*.pdf
+
+# Temporary files and ad-hoc outputs
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+~$*
+screenshots/
+captures/
+test_outputs/
