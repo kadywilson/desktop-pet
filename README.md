@@ -1,114 +1,107 @@
-# Smart Desktop Pet / 智能桌宠
+# Smart Desktop Pet
 
-一个本地优先的 Windows 桌面宠物应用。它会待在桌面上，可以拖动、双击互动、显示气泡、管理待办、提醒 DDL、短聊天、朗读回复、查询天气，并且可以和本地日记项目联动。
+Local-first Windows desktop pet app built with Python and PySide6.
 
-This is a local-first Windows desktop pet built with Python and PySide6. It can sit on your desktop, react to clicks, show speech bubbles, manage todos, chat briefly, play optional TTS audio, show weather, and receive diary context from a companion project.
+[中文说明](README.zh-CN.md)
 
-## 关联项目 / Related Project
+Smart Desktop Pet is a small local companion app that sits on your desktop. It supports a draggable transparent pet window, speech bubbles, todo reminders, short AI chat, optional TTS playback, manual-location weather, and an optional sanitized diary-context bridge.
 
-本项目可以和日记项目联动：
+The project is designed for private local use. Real API keys, local config files, chat memory, todo data, logs, TTS cache, weather cache, and diary bridge files should stay on your own machine.
 
-- [kadywilson/ai_diary](https://github.com/kadywilson/ai_diary)
+## What It Does
 
-`ai_diary` 可以导出一份用户确认过的“今日小纸条”到本项目的本地桥接文件中。桌宠只读取这份导出结果，不直接读取原始日记目录，也不会把日记内容上传到云端。
+* Shows a transparent always-on-top desktop pet.
+* Lets you drag the pet around the desktop.
+* Triggers a short AI poke response on double click.
+* Shows replies in a speech bubble.
+* Switches pet expressions such as `default`, `happy`, `annoyed`, and `upset`.
+* Provides a local todo window backed by SQLite.
+* Generates AI-assisted deadline reminders.
+* Provides a short chat panel with local JSONL memory.
+* Archives active chat memory into local archive files.
+* Can optionally play bubble text through Volcengine/Doubao TTS.
+* Can show weather from wttr.in using a manually configured location.
+* Can optionally receive sanitized diary context from AI Diary Feedback.
 
-The companion diary project can export a user-approved daily note into this app's local bridge file. The pet reads only that exported file, not the raw diary folder.
+## Related Project
 
-## 功能 / Features
+Smart Desktop Pet can optionally integrate with AI Diary Feedback:
 
-- 透明、无边框、始终置顶的桌宠窗口
-- 鼠标拖动移动桌宠
-- 双击桌宠触发 AI poke 回复
-- 气泡显示回复，点击气泡可隐藏
-- 表情图片切换：`default`、`happy`、`annoyed`、`upset`
-- 托盘菜单和桌宠右键菜单
-- Todo 待办窗口，本地 SQLite 存储
-- DDL 自动提醒和 AI 个性化提醒文案
-- Chat Panel 短聊天输入框
-- 本地 JSONL 聊天记忆和归档
-- 可选 TTS 语音朗读
-- 手动位置天气查询，使用 wttr.in，无 API key
-- 可选日记小纸条联动
-- 本地日志和本地缓存
+[https://github.com/kadywilson/ai_diary](https://github.com/kadywilson/ai_diary)
 
-## 隐私设计 / Privacy
+The diary project can export a user-approved local JSON bridge file containing sanitized context, such as a short summary or suggested tone. Smart Desktop Pet reads only that exported bridge file. It should not read raw diary folders, full diary entries, raw AI conversations, API keys, tokens, or private local paths.
 
-这个项目默认面向个人本地使用。
+You do not need AI Diary Feedback installed to run this desktop pet.
 
-- 不需要登录
-- 不做云同步
-- 不做遥测
-- 不读取系统定位
-- 不使用 GPS
-- 不使用浏览器定位
-- 不使用 IP 自动定位
-- 天气位置只从 `config/weather.yaml` 手动读取
-- 聊天记忆、待办、日志、TTS 缓存、天气缓存都保存在本地
-- `.env`、真实 `config/*.yaml`、`data/` 运行数据和 `logs/` 日志不应该提交到仓库
-
-## 环境要求 / Requirements
-
-- Windows 10 或 Windows 11
-- Python 3.11
-- Anaconda 或 Miniconda
-- PySide6
-- 依赖见 `requirements.txt`
-
-## 安装 / Setup
-
-克隆仓库：
-
-```powershell
-git clone https://github.com/kadywilson/desktop-pet.git
-cd desktop-pet
-```
-
-创建并激活 conda 环境：
-
-```powershell
-conda create -n desktop-pet python=3.11
-conda activate desktop-pet
-pip install -r requirements.txt
-```
-
-复制本地配置模板：
-
-```powershell
-Copy-Item .env.example .env
-Copy-Item config/persona.example.yaml config/persona.yaml
-Copy-Item config/chat.example.yaml config/chat.yaml
-Copy-Item config/voice.example.yaml config/voice.yaml
-Copy-Item config/weather.example.yaml config/weather.yaml
-Copy-Item config/theme.example.yaml config/theme.yaml
-```
-
-然后按自己的环境编辑复制出来的本地文件。不要提交 `.env` 和真实的 `config/*.yaml`。
-
-## API 配置 / API Configuration
-
-聊天 AI 使用 OpenAI-compatible API。把 `.env.example` 复制成 `.env` 后填写：
+## Project Structure
 
 ```text
+src/pet_app/
+|-- main.py                  # Application entry point
+|-- app.py                   # Main controller
+|-- config.py                # Environment-based AI config
+|-- ui/                      # PySide6 windows, widgets, bubble, tray menu
+|-- core/                    # AI, todo, reminders, chat memory, TTS, weather
+|-- models/                  # Data models
+`-- utils/                   # Paths, logging, helpers
+
+assets/                      # Pet images, icons, theme assets
+config/                      # Local YAML configs and public example templates
+data/                        # Local runtime data; only .gitkeep is committed
+logs/                        # Local logs; only .gitkeep is committed
+scripts/                     # Optional helper scripts
+```
+
+## Requirements
+
+* Windows 10 or Windows 11
+* Python 3.11
+* Conda or another Python environment manager
+* An OpenAI-compatible API key if you want real AI replies
+* Optional Volcengine/Doubao TTS credentials if you want voice playback
+
+Install dependencies:
+
+```bat
+conda create -n desktop-pet python=3.11
+conda activate desktop-pet
+python -m pip install -r requirements.txt
+```
+
+## Configuration
+
+Copy the example files:
+
+```bat
+copy .env.example .env
+copy config\persona.example.yaml config\persona.yaml
+copy config\chat.example.yaml config\chat.yaml
+copy config\voice.example.yaml config\voice.yaml
+copy config\weather.example.yaml config\weather.yaml
+copy config\theme.example.yaml config\theme.yaml
+```
+
+Then edit the copied local files with your own private values.
+
+Important `.env` settings:
+
+```env
 SILICONFLOW_API_KEY=your_siliconflow_api_key_here
 SILICONFLOW_BASE_URL=https://api.siliconflow.cn/v1
 SILICONFLOW_MODEL=your_openai_compatible_model_here
-```
 
-TTS 是可选功能：
-
-```text
 VOLCENGINE_TTS_API_KEY=your_volcengine_tts_api_key_here
 VOLCENGINE_TTS_RESOURCE_ID=your_volcengine_resource_id_here
 VOLCENGINE_TTS_VOICE_TYPE=your_volcengine_voice_type_here
 ```
 
-如果没有配置 API key，相关 AI/TTS 功能会尽量使用 fallback 或自动禁用，不应该影响基础窗口运行。
+Never commit `.env` or real `config/*.yaml` files.
 
-## 天气配置 / Weather
+## Weather
 
-天气功能使用 wttr.in，不需要 API key。
+Weather uses wttr.in and does not require an API key.
 
-在 `config/weather.yaml` 中手动配置位置：
+Configure a manual location in `config/weather.yaml`:
 
 ```yaml
 weather:
@@ -118,41 +111,49 @@ weather:
     display_name: "London"
 ```
 
-注意：不要把 `query` 留空。空位置请求可能触发 wttr.in 的 IP 推断定位，这不符合本项目的隐私设计。
+Do not leave `query` empty. Empty wttr.in requests may infer location by IP, which is outside this project's privacy design.
 
-## 日记联动 / Diary Bridge
+## Optional Integration: AI Diary Feedback
 
-如果你也使用 [kadywilson/ai_diary](https://github.com/kadywilson/ai_diary)，可以让日记项目导出今日小纸条到：
+If you use AI Diary Feedback, it can export a local bridge file for this app:
 
 ```text
 data/diary_feedback/inbox/latest.json
 ```
 
-桌宠菜单中的 `Diary Feedback` 会读取这份本地桥接文件，并把经过用户确认的上下文追加到当前聊天记忆中。
+The desktop pet menu item `Diary Feedback` reads that local bridge file and appends the sanitized context to the active local chat memory.
 
-隐私边界：
+The bridge is intentionally narrow:
 
-- 不读取原始日记目录
-- 不导入完整日记正文
-- 不上传日记内容
-- 不调用 TTS 朗读日记内容
-- 不把 diary 项目当作云服务
+* It should not contain full diary entries.
+* It should not contain raw AI conversations.
+* It should not contain API keys or tokens.
+* It should not contain private local paths.
+* It should not upload anything.
 
-## 运行 / Run
+## Run
 
-日常静默启动：
+Daily silent launch:
 
 ```text
 run_pet_silent.vbs
 ```
 
-调试启动：
+Debug launch:
 
 ```text
 run_pet_debug.bat
 ```
 
-手动启动：
+Manual launch:
+
+```bat
+conda activate desktop-pet
+set PYTHONPATH=src
+python -m pet_app.main
+```
+
+PowerShell:
 
 ```powershell
 conda activate desktop-pet
@@ -160,69 +161,64 @@ $env:PYTHONPATH = "src"
 python -m pet_app.main
 ```
 
-## TTS 试听 / TTS Preview
+## Main Workflows
 
-填好 `.env` 和 `config/voice.yaml` 后，可以生成本地试听音频：
+### Poke The Pet
 
-```powershell
+Double-click the pet window. The app asks the configured AI provider for a short response and shows it in the speech bubble. If AI configuration is missing or fails, the app falls back gracefully.
+
+### Chat
+
+Open the chat panel from the tray menu or pet right-click menu. Chat memory is stored locally in JSONL format under `data/chat_memory/`.
+
+### Todo And Reminders
+
+Open the todo window from the menu, create todos, and set deadline times. The app can remind you before unfinished and unexpired todos.
+
+### Weather
+
+Use `Weather Today` or `Weather Tomorrow` from the menu. Weather is fetched in the background and shown in the speech bubble.
+
+### Voice Playback
+
+Turn voice on or off from the menu. When voice is off, the app should not call the TTS API.
+
+### TTS Preview
+
+After filling `.env` and `config/voice.yaml`, generate local sample audio:
+
+```bat
 conda activate desktop-pet
-$env:PYTHONPATH = "src"
-python scripts/preview_tts.py
+set PYTHONPATH=src
+python scripts\preview_tts.py
 ```
 
-试听文件会生成到 `data/tts_samples/`。这些文件是本地生成物，不应该提交。
+Generated samples are written to `data/tts_samples/` and should not be committed.
 
-## 使用方式 / Usage
+## Privacy And Safety
 
-| 操作 | 效果 |
-|---|---|
-| 拖动桌宠 | 移动窗口 |
-| 双击桌宠 | 触发 poke 回复 |
-| 右键桌宠 | 打开功能菜单 |
-| 点击气泡 | 隐藏气泡 |
-| Show Chat | 显示聊天输入框 |
-| Open Todo | 打开待办窗口 |
-| Weather Today | 查询今日天气 |
-| Diary Feedback | 读取日记小纸条桥接文件 |
-| Voice On / Voice Off | 切换 TTS 朗读 |
-| Archive Chat Memory | 归档当前聊天记忆 |
-| Quit | 退出应用 |
+This repository is meant to publish code, public assets, documentation, and example configuration only.
 
-## 项目结构 / Project Layout
+Do not commit:
 
-```text
-src/pet_app/
-|-- main.py
-|-- app.py
-|-- config.py
-|-- ui/
-|-- core/
-|-- models/
-`-- utils/
-```
+* `.env`
+* real `config/*.yaml`
+* `data/pet.db`
+* `data/chat_memory/`
+* `data/diary_feedback/`
+* `data/tts_cache/`
+* `data/tts_samples/`
+* `data/weather_cache/`
+* logs
+* generated audio
+* API keys or tokens
+* private local paths
 
-- `ui/`：PySide6 窗口、气泡、托盘菜单、Todo 窗口、Chat Panel
-- `core/`：AI、待办、提醒、聊天记忆、TTS、天气、日记桥接等业务逻辑
-- `models/`：数据模型
-- `utils/`：路径、日志等工具
-- `assets/`：角色图片、图标、主题资源
-- `config/`：本地配置和 `.example.yaml` 模板
-- `data/`：本地运行数据
-- `logs/`：本地日志
+See:
 
-## Notes For English Readers
+* `SECURITY.md`
+* `AGENTS.md`
 
-Smart Desktop Pet is a small local Windows companion app. It is not a web app,
-not a cloud service, and not a deployed SaaS project.
+## License
 
-To run it:
-
-1. Clone the repository.
-2. Create the `desktop-pet` conda environment.
-3. Install `requirements.txt`.
-4. Copy `.env.example` and `config/*.example.yaml` to local files.
-5. Fill in optional API credentials.
-6. Start with `run_pet_debug.bat` or `python -m pet_app.main`.
-
-The weather feature uses manual location only. The diary bridge is optional and
-works with [kadywilson/ai_diary](https://github.com/kadywilson/ai_diary).
+MIT License. See `LICENSE`.
